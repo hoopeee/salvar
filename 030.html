@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@700;900&display=swap');
+
+
+    body {
+        background-image: linear-gradient(to top, rgb(117, 216, 255) 25%, rgb(114, 214, 253) 50%, rgb(81, 200, 255) 75%, rgb(0, 119, 255) 100%);
+    }
+
+    #jogador-da-vez {
+        font-size: 25px;
+        font-family: "Poppins";
+        text-align: center;
+        margin: 15px auto 0px;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: black;
+        text-shadow: black -1px -1px;
+        color: white;
+    }
+
+    button {
+        width: 200px;
+        height: 200px;
+        font-size: 150px;
+        border-radius: 30px;
+        border: 0px;
+        background-image: linear-gradient(to right, #f0fcff 0%, #cbe1ff 51%, #dff9ff 100%);
+        opacity: 70%;
+    }
+
+    button:hover {
+        background-position: right center;
+
+    }
+
+    table {
+        margin: 15px auto;
+    }
+
+
+    #mensagemdiv {
+        color: rgb(255, 0, 0);
+        font-size: 20px;
+        font-family: "Poppins";
+        text-align: center;
+        margin: 0px auto;
+    }
+
+    #novo-jogo {
+        text-align: center;
+    }
+
+    #botao-reset {
+        font-size: 28px;
+        font-family: "Poppins";
+        width: 320px;
+        height: 50px;
+        margin: 40px auto;
+    }
+    </style>
+</head>
+<body>
+
+    <div id="jogador-da-vez">
+        <span id="jogador-msg">Jogador da vez:</span> <span id="jogador-valor"></span>
+    </div>
+    <div id="mensagemdiv">
+    <br>
+    <span id="mensagem"></span>
+    </div>
+
+    <table>
+        <tr>
+            <td>
+                <button id="indice_1" onclick="jogarNoIndice(1)"></button>
+            </td>
+            <td>
+                <button id="indice_2" onclick="jogarNoIndice(2)"></button>
+            </td>
+            <td>
+                <button id="indice_3" onclick="jogarNoIndice(3)"></button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button id="indice_4" onclick="jogarNoIndice(4)"></button>
+            </td>
+            <td>
+                <button id="indice_5" onclick="jogarNoIndice(5)"></button>
+            </td>
+            <td>
+                <button id="indice_6" onclick="jogarNoIndice(6)"></button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button id="indice_7" onclick="jogarNoIndice(7)"></button>
+            </td>
+            <td>
+                <button id="indice_8" onclick="jogarNoIndice(8)"></button>
+            </td>
+            <td>
+                <button id="indice_9" onclick="jogarNoIndice(9)"></button>
+            </td>
+        </tr>
+
+    </table>
+
+    <div id="novo-jogo">
+     <button onclick="novoJogo()" id="botao-reset">Novo Jogo</button>
+    </div>
+    
+    <script>
+        let jogadorDaVez = "X"
+        let fimDeJogo = false;
+        let qtdJogadas = 0;
+
+        const matriz = [
+            "", "","",
+            "", "","",
+            "", "","",
+        ]
+
+        function jogarNoIndice(indice) {
+            if(fimDeJogo) {
+                return;
+            }
+
+
+            if(matriz[indice - 1] !== "") {
+                document.getElementById("mensagem").innerHTML = "Você não pode jogar nesse local!";
+                return;
+            }
+            else{
+                document.getElementById("mensagem").innerHTML = "";
+            }
+
+            qtdJogadas++;
+            document.getElementById("indice_" + indice).innerHTML = jogadorDaVez;
+            matriz[indice -1] = jogadorDaVez;
+
+            if(validarJogadas()) {
+                document.getElementById("mensagem").innerHTML = "O jogador " + jogadorDaVez + " venceu a rodada.";
+                fimDeJogo = true;
+                return; 
+            }
+            else {
+                if(qtdJogadas >= 9) {
+                    document.getElementById("mensagem").innerHTML = "Deu velha.";
+                    return;
+                    
+                }
+            }
+
+            if(jogadorDaVez == "X") {
+                jogadorDaVez = "O";
+                document.getElementById("jogador-valor").innerHTML = "O";
+            }
+
+            else {
+                jogadorDaVez = "X"
+                document.getElementById("jogador-valor").innerHTML = "X";
+            }
+
+            function validarJogadas() {
+                let jogo = "";
+
+                // Horizontal
+                jogo = matriz[0] + matriz[1] + matriz[2];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                jogo = matriz[3] + matriz[4] + matriz[5];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                jogo = matriz[6] + matriz[7] + matriz[8];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                // Vertical
+                jogo = matriz[0] + matriz[3] + matriz[6];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                jogo = matriz[1] + matriz[4] + matriz[7];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                jogo = matriz[2] + matriz[5] + matriz[8];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                // Diagonal
+                jogo = matriz[0] + matriz[4] + matriz[8];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+            
+                jogo = matriz[2] + matriz[4] + matriz[6];
+                if(jogo == "XXX" || jogo == "OOO") {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+
+        function novoJogo() {
+            jogadorDaVez = "X";
+            fimDeJogo = false;
+            qtdJogadas = 0;
+            matriz = [
+            "", "","",
+            "", "","",
+            "", "","",
+        ]
+        document.getElementById("indice_1").innerHTML = "";
+        document.getElementById("indice_2").innerHTML = "";
+        document.getElementById("indice_3").innerHTML = "";
+        document.getElementById("indice_4").innerHTML = "";
+        document.getElementById("indice_5").innerHTML = "";
+        document.getElementById("indice_6").innerHTML = "";
+        document.getElementById("indice_7").innerHTML = "";
+        document.getElementById("indice_8").innerHTML = "";
+        document.getElementById("indice_9").innerHTML = "";
+
+        document.getElementById("jogador-valor").innerHTML = "";
+        document.getElementById("mensagem").innerHTML = "";
+        document.getElementById("jogador-valor").innerHTML = "0";
+        }
+
+
+    </script>
+</body>
+</html>
